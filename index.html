@@ -6,7 +6,6 @@
     <meta name='viewport' content='width=device-width, initial-scale=1' />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
-    <script src="Photos.geojson"></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
     <style>
       body {
@@ -39,7 +38,7 @@ var map = new mapboxgl.Map({
 
 // code from the next step will go here!//
 map.on('load', function () {
-map.addSource('earthquakes', {
+map.addSource('Photos', {
 type: 'geojson',
 // Use a URL for the value for the `data` property.
 data: 'https://annarobinette.github.io/stoweframeworkmap/Photostest.geojson'
@@ -48,7 +47,7 @@ data: 'https://annarobinette.github.io/stoweframeworkmap/Photostest.geojson'
 map.addLayer({
 'id': 'earthquakes-layer',
 'type': 'circle',
-'source': 'earthquakes',
+'source': 'Photos',
 'paint': {
 'circle-radius': 8,
 'circle-stroke-width': 2,
