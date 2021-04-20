@@ -6,7 +6,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1' />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
-    <script src="Photos_9.json"></script>
+    <script src="Photos.geojson"></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
     <style>
       body {
@@ -42,7 +42,7 @@ map.on('load', function () {
 map.addSource('earthquakes', {
 type: 'geojson',
 // Use a URL for the value for the `data` property.
-data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
+data: 'https://annarobinette.github.io/stoweframeworkmap/Photos.geojson'
 });
 
 map.addLayer({
