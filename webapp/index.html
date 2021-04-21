@@ -4,10 +4,11 @@
     <meta charset='utf-8' />
     <title>The Map | Stowe Framework</title>
     <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
- <script src="https://annarobinette.github.io/stoweframeworkmap/webapp/Photos.geojson"></script>
-<!--    <script src="https://embed.github.com/view/geojson/annarobinette/stoweframeworkmap/webapp/Photos.geojson"></script> -->
+  <!--    <script src="https://embed.github.com/view/geojson/annarobinette/stoweframeworkmap/webapp/Photos.geojson"></script> -->
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
     <style>
       body {
@@ -21,43 +22,92 @@
         bottom: 0;
         width: 100%;
       }
+      .mapboxgl0-popup {
+      max-width: 400px;
+      max-height: 400px;
+      background-color: black;
+      font: 12px/20px 'Open Sans', sans-serif;
+    }
+    .mapboxgl0-popup-photo {
+    max-width: 300px;
+  }
     </style>
 </head>
 <body>
 
 <div id='map'></div>
-
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYW5uYXZyb2JpbmV0dGUiLCJhIjoiY2tucHVmbXIyMWNvazJ1bzVjZTBsZGVmayJ9.fIwFH_ua7hAqylh4TDESxA';
 
+// Add AJAX request for data
+var photos = $.ajax({
+      url:"https://annarobinette.github.io/stoweframeworkmap/webapp/Photos.geojson",
+      dataType: "geojson",
+      success: console.log("Photo data successfully loaded."),
+      error: function (xhr) {
+        alert(xhr.statusText)
+      }
+    });
 var map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mapbox/light-v10',
+  style: 'mapbox://styles/annavrobinette/cknpuhctd0id817nxnllxe9m6',
   center: [-0.026547, 51.587843],
-  zoom: 13.13
+  zoom: 12.5
 });
 
 // code from the next step will go here!//
 map.on('load', function () {
-map.addSource('Photos', {
-type: 'geojson',
-// Use a URL for the value for the `data` property.
-data: 'https://annarobinette.github.io/stoweframeworkmap/webapp/Photos.geojson'
-});
+  map.addSource('photos', {
+    type: 'geojson',
+    data: 'https://annarobinette.github.io/stoweframeworkmap/webapp/Photos.geojson'
+  });
+// map.addLayer({  'id': 'photo-marker',  'type': 'circle',  'source': 'Photos',  'paint': {  'circle-radius': 6,  'circle-stroke-width': 1,  'circle-color': '#ff0042','circle-stroke-color': 'white'  }});
 
+// Add a layer showing the places.
 map.addLayer({
-'id': 'photos-layer',
+'id': 'photos',
 'type': 'circle',
-'source': 'Photos',
+'source': 'photos',
 'paint': {
-'circle-radius': 8,
-'circle-stroke-width': 2,
-'circle-color': 'red',
-'circle-stroke-color': 'white'
+'circle-color': '#ff0042',
+'circle-radius': 6,
+'circle-stroke-width': 1,
+'circle-stroke-color': '#ffffff'
 }
 });
+
+// Create a popup, but don't add it to the map yet.
+var popup = new mapboxgl0.Popup({
+closeButton: false,
+closeOnClick: false
 });
+
+map.on('mouseenter', 'photos', function (e) {
+// Change the cursor style as a UI indicator.
+map.getCanvas().style.cursor = 'pointer';
+
+var coordinates = e.features[0].geometry.coordinates.slice();
+var description = e.features[0].properties.description;
+
+// Ensure that if the map is zoomed out such that multiple
+// copies of the feature are visible, the popup appears
+// over the copy being pointed to.
+while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+}
+
+// Populate the popup and set its coordinates
+// based on the feature found.
+popup.setLngLat(coordinates).setHTML(coordinates).addTo(map);
+});
+
+map.on('mouseleave', 'photos', function () {
+map.getCanvas().style.cursor = '';
+popup.remove();
+});
+})
 </script>
 
 
