@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
   <!--    <script src="https://embed.github.com/view/geojson/annarobinette/stoweframeworkmap/webapp/Photos.geojson"></script> -->
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://annarobinette.github.io/stoweframeworkmap/webapp/css/mapbox-gl.css' rel='stylesheet' />
     <style>
       body {
         margin: 0;
@@ -22,13 +22,11 @@
         bottom: 0;
         width: 100%;
       }
-      .mapboxgl0-popup {
+      .mapboxgl-popup {
       max-width: 400px;
-      max-height: 400px;
-      background-color: black;
       font: 12px/20px 'Open Sans', sans-serif;
     }
-    .mapboxgl0-popup-photo {
+    .mapboxgl-popup-photo {
     max-width: 300px;
   }
     </style>
@@ -79,7 +77,7 @@ map.addLayer({
 });
 
 // Create a popup, but don't add it to the map yet.
-var popup = new mapboxgl0.Popup({
+var popup = new mapboxgl.Popup({
 closeButton: false,
 closeOnClick: false
 });
